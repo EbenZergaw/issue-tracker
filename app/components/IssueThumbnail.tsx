@@ -2,7 +2,7 @@
 import { Issue } from '@prisma/client'
 import axios from 'axios'
 import React from 'react'
-import {AiFillCloseCircle} from 'react-icons/ai'
+import {AiFillCloseCircle, AiFillCheckCircle} from 'react-icons/ai'
 
 interface IssueThumbnailProps {
     issue: Issue;
@@ -33,8 +33,8 @@ interface IssueThumbnailProps {
 
   return (
     <div className='border border-purple-300 rounded-lg p-4 mb-4 w-3/4'>
-        <div className="grid grid-cols-6">
-        <div className="col-span-5">
+        <div className="grid grid-cols-10">
+        <div className="col-span-9">
             <h2 className='text-purple-300 font-bold'>{issue.title}</h2>
             <p>{issue.description}</p>
             <div className="mt-8">
@@ -46,12 +46,12 @@ interface IssueThumbnailProps {
         <div className='float-right'>
           {issue.status == "CLOSED" ? 
             <button onClick={() => openIssue(issue.id)}>
-              <AiFillCloseCircle  className='float-right text-2xl text-red-300'/>
+              <AiFillCheckCircle className='float-right text-2xl text-green-300 hover:text-red-400'/>
             </button>
 
           : 
             <button onClick={() => closeIssue(issue.id)}>
-              <AiFillCloseCircle  className='float-right text-2xl text-red-300'/>
+              <AiFillCloseCircle  className='float-right text-2xl text-red-300 hover:text-green-400'/>
             </button>
           }
             
