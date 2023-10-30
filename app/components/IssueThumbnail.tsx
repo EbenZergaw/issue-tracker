@@ -10,16 +10,26 @@ interface IssueThumbnailProps {
   }
 
   const IssueThumbnail: React.FC<IssueThumbnailProps> = ({ issue, _getData }) => {
+    
     let date = new Date(issue.createdAt)
 
     const closeIssue = async (id:number) => {
         try {
-          let closeIssue = await axios.put('/api/issues', {id: id})
+          let closeIssue = await axios.put('/api/issues', {id: id, action: "CLOSE"})
           _getData()
         } catch (error) {
         //   setError('An unexpected error occured')
         }
       }
+
+    const openIssue = async(id:number) => {
+      try {
+        let openIssue = await axios.put('/api/issues', {id: id, action: "OPEN"})
+        _getData()
+      } catch (error) {
+      //   setError('An unexpected error occured')
+      }
+    }
 
   return (
     <div className='border border-purple-300 rounded-lg p-4 mb-4 w-3/4'>
@@ -34,9 +44,17 @@ interface IssueThumbnailProps {
         </div>
 
         <div className='float-right'>
-            <button onClick={() => closeIssue(issue.id)}>
-            <AiFillCloseCircle  className='float-right text-2xl text-red-300'/>
+          {issue.status == "CLOSED" ? 
+            <button onClick={() => openIssue(issue.id)}>
+              <AiFillCloseCircle  className='float-right text-2xl text-red-300'/>
             </button>
+
+          : 
+            <button onClick={() => closeIssue(issue.id)}>
+              <AiFillCloseCircle  className='float-right text-2xl text-red-300'/>
+            </button>
+          }
+            
         </div>
         </div>
     </div>

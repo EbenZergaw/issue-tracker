@@ -29,14 +29,10 @@ function IssuesPage() {
     getData(statusView)
   }, [statusView])
 
-  // useEffect(() => {
-  //   getData
-  // }, [statusView])
-
   return (
     <div className='grid grid-cols-2'>
       <div>
-        <h2 className="text-2xl text-purple-500 mb-5">Open Issues</h2>
+        <h2 className="text-2xl text-purple-500 mb-5">Issues</h2>
 
         <div className="flex mb-10">
           {statusView == "open" ? 
@@ -64,7 +60,7 @@ function IssuesPage() {
           return(
             <div>
               <IssueThumbnail key={issue.id} issue={issue} _getData={() => {
-              getData()
+              getData(statusView)
           }} />
             </div>
           )
