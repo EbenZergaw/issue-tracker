@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import { createIssueSchema } from "../../validationSchemas";
 
+// CREATE ISSUE
 export async function POST(request: NextRequest){
     const body = await request.json()
     const validation = createIssueSchema.safeParse(body)
@@ -17,12 +18,23 @@ export async function POST(request: NextRequest){
     return NextResponse.json(newIssue, {status: 201})
 }
 
-// GET OPEN ISSUES
+// GET ISSUES
 export async function GET(request: NextRequest){
-    const data = await prisma.issue.findMany({
-        where: { status: Status.OPEN}
-    })
-    return NextResponse.json(data, {status: 201})
+
+    const statusView = (await request.nextUrl.searchParams.get("status_view"))
+    
+    
+    if(statusView == "open"){
+        const data = await prisma.issue.findMany({
+            where: { status: Status.OPEN}
+        })
+        return NextResponse.json(data, {status: 201})
+    } else {
+        const data = await prisma.issue.findMany({
+            where: { status: Status.CLOSED}
+        })
+        return NextResponse.json(data, {status: 201})
+    }
 }
 
 // CLOSE ISSUE 

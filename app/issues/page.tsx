@@ -7,12 +7,17 @@ import {AiFillCloseCircle} from 'react-icons/ai'
 import IssueThumbnail from '../components/IssueThumbnail'
 
 function IssuesPage() {
+  const [statusView, setStatusView] = useState("open")
   const [issuesData, setIssuesData] = useState([])
   const [error, setError] = useState('')
 
-  const getData = async () => {
+  const getData = async (statusView : String) => {
     try {
-      const data = await axios.get('/api/issues')
+      const data = await axios.get('/api/issues', {
+        params: {
+          status_view: statusView
+        }
+      })
       setIssuesData(data.data)
     } catch (error) {
         
@@ -21,14 +26,40 @@ function IssuesPage() {
   }
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData(statusView)
+  }, [statusView])
 
+  // useEffect(() => {
+  //   getData
+  // }, [statusView])
 
   return (
     <div className='grid grid-cols-2'>
       <div>
         <h2 className="text-2xl text-purple-500 mb-5">Open Issues</h2>
+
+        <div className="flex mb-10">
+          {statusView == "open" ? 
+            <div className='space-x-5'>
+              <Button onClick={() => {setStatusView("open")}}>
+                Open Issues
+              </Button>
+              <Button onClick={() => {setStatusView("closed")}} variant='outline'>
+                Closed Issues
+              </Button>
+            </div>
+            :
+              <div className='space-x-5'>
+                <Button onClick={() => {setStatusView("open")}} variant='outline'>
+                  Open Issues
+                </Button>
+                <Button onClick={() => {setStatusView("closed")}}>
+                  Closed Issues
+                </Button>
+              </div>
+          }
+        </div>
+
         {issuesData.map((issue) => {
           return(
             <div>
