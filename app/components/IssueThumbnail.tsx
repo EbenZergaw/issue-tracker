@@ -4,12 +4,18 @@ import axios from 'axios'
 import React from 'react'
 import {AiFillCloseCircle} from 'react-icons/ai'
 
-function IssueThumbnail(issue: Issue) {
+interface IssueThumbnailProps {
+    issue: Issue;
+    _getData: () => void;
+  }
+
+  const IssueThumbnail: React.FC<IssueThumbnailProps> = ({ issue, _getData }) => {
     let date = new Date(issue.createdAt)
 
     const closeIssue = async (id:number) => {
         try {
           let closeIssue = await axios.put('/api/issues', {id: id})
+          _getData()
         } catch (error) {
         //   setError('An unexpected error occured')
         }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import { Status } from "@prisma/client";
 import { createIssueSchema } from "../../validationSchemas";
 
 export async function POST(request: NextRequest){
@@ -16,7 +17,21 @@ export async function POST(request: NextRequest){
     return NextResponse.json(newIssue, {status: 201})
 }
 
+// GET OPEN ISSUES
 export async function GET(request: NextRequest){
-    const data = await prisma.issue.findMany()
+    const data = await prisma.issue.findMany({
+        where: { status: Status.OPEN}
+    })
     return NextResponse.json(data, {status: 201})
+}
+
+// CLOSE ISSUE 
+export async function PUT(request: NextRequest){
+    const {id, status} = await request.json()
+    const issue = await prisma.issue.update({
+        where: {id: id},
+        data: { status: Status.CLOSED }
+    })
+
+    return NextResponse.json(issue)
 }
