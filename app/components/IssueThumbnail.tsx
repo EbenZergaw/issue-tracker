@@ -32,7 +32,7 @@ interface IssueThumbnailProps {
     }
 
   return (
-    <div className='border border-purple-300 rounded-lg p-4 mb-4 w-3/4'>
+    <div className='border border-purple-300 rounded-lg p-4 mb-4 w-11/12'>
         <div className="grid grid-cols-10">
         <div className="col-span-9">
             <h2 className='text-purple-300 font-bold'>{issue.title}</h2>
@@ -44,11 +44,11 @@ interface IssueThumbnailProps {
         </div>
 
         <div className='float-right'>
+          
           {issue.status == "CLOSED" ? 
             <button onClick={() => openIssue(issue.id)}>
               <AiFillCheckCircle className='float-right text-2xl text-green-300 hover:text-red-400'/>
             </button>
-
           : 
             <button onClick={() => closeIssue(issue.id)}>
               <AiFillCloseCircle  className='float-right text-2xl text-red-300 hover:text-green-400'/>
