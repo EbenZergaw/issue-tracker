@@ -1,19 +1,29 @@
 'use client'
 import { Issue } from '@prisma/client'
-import { Tooltip } from '@radix-ui/themes'
+import { TextFieldInput, Tooltip } from '@radix-ui/themes'
 import axios from 'axios'
 import React, { useState } from 'react'
 import {AiFillCloseCircle, AiFillCheckCircle} from 'react-icons/ai'
 import {MdEdit} from 'react-icons/md'
+import { Button, Callout, Text, TextField } from '@radix-ui/themes'
+import {useForm, Controller} from 'react-hook-form'
+import ErrorMessage from '@/app/components/ErrorMessage';
+import SimpleMDE, {SimpleMdeReact} from "react-simplemde-editor";
+import { createIssueSchema } from '@/app/validationSchemas';
+import {z} from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+import "easymde/dist/easymde.min.css";
 
 interface IssueThumbnailProps {
     issue: Issue;
     _getData: () => void;
   }
 
+  import "easymde/dist/easymde.min.css";
   const IssueThumbnail: React.FC<IssueThumbnailProps> = ({ issue, _getData }) => {
 
     const [isEditing, setIsEditing] = useState(false)
+    const [editTitle, setEditTitle] = useState(issue.title)
     
     let date = new Date(issue.createdAt)
 
@@ -35,14 +45,33 @@ interface IssueThumbnailProps {
       }
     }
 
-    const displayTooltip = (msg: string) => {
 
-    }
+    type IssueForm = z.infer<typeof createIssueSchema>
+
+    const {register, control, handleSubmit, formState: { errors }}  = useForm<IssueForm>({
+      resolver: zodResolver(createIssueSchema)
+     })
 
     if(isEditing){
+      
       return(
         <div className='border border-purple-300 rounded-lg p-4 mb-4 w-11/12'>
-            <input className='input' type="text" value={issue.title}/>
+           <TextField.Root>
+                <TextFieldInput type="text" value={editTitle} placeholder={issue.title} onChange={(e) => {
+                  setEditTitle(e.target.value)
+                }}/>
+            </TextField.Root>
+
+            <SimpleMdeReact className='mt-4'
+              value={issue.description}
+            ></SimpleMdeReact>
+            
+            <Button onClick={(e) => {
+              e.preventDefault()
+              setIsEditing(false)
+            }}>
+              Save
+            </Button>
         </div>
       )
     } else {
