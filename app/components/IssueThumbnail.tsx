@@ -74,7 +74,7 @@ interface IssueThumbnailProps {
     if(isEditing){
       
       return(
-        <div className='border border-purple-300 rounded-lg p-4 mb-4 w-11/12'>
+        <div className='border border-purple-600 rounded-lg p-4 mb-4 w-11/12'>
            <TextField.Root>
                 <TextFieldInput type="text" value={editTitle} placeholder={issue.title} onChange={(e) => {
                   setEditTitle(e.target.value)
@@ -93,6 +93,7 @@ interface IssueThumbnailProps {
                   }}>
                   Save
               </Button>
+              
               <div className="ml-4">
                 <Select.Root defaultValue={editStatus} onValueChange={(val) => {
                   setEditStatus(val)
@@ -107,18 +108,26 @@ interface IssueThumbnailProps {
                   </Select.Content>
                 </Select.Root>
               </div>
+
+              <div className="ml-4">
+                <Button variant='ghost' onClick={(e) => {
+                  setIsEditing(false)
+                }}>
+                  Cancel
+                </Button>
+              </div>
             </div>
         </div>
       )
     } else {
       return (
-        <div className='border border-purple-300 rounded-lg p-4 mb-4 w-11/12'>
+        <div className='border border-purple-600 rounded-lg p-4 mb-4 w-11/12'>
             <div className="grid grid-cols-10">
             <div className="col-span-9">
-                <h2 className='text-purple-300 font-bold'>{issue.title}</h2>
+                <h2 className='text-purple-600 font-bold'>{issue.title}</h2>
                 <p>{issue.description}</p>
                 <div className="mt-8">
-                <span className='text-purple-300'>Created at: </span>
+                <span className='text-purple-600'>Created at: </span>
                 <span>{date.toDateString()}</span>
                 </div>
             </div>
@@ -130,13 +139,13 @@ interface IssueThumbnailProps {
     
                   <Tooltip content="Reopen Issue">
                     <button onClick={() => openIssue(issue.id)}>
-                      <GoIssueClosed className='float-right text-2xl text-green-300 hover:text-red-400'/>
+                      <GoIssueClosed className='float-right text-2xl text-green-600 hover:text-red-600'/>
                     </button>
                   </Tooltip>
                 : 
                 <Tooltip content="Close Issue">
                   <button onClick={() => closeIssue(issue.id)}>
-                    <GoIssueOpened  className='float-right text-2xl text-red-300 hover:text-green-400'/>
+                    <GoIssueOpened  className='float-right text-2xl text-red-600 hover:text-green-600'/>
                   </button>
                 </Tooltip>
                 }

@@ -23,9 +23,9 @@ export default function RootLayout({
 }) {
   return (
     
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.variable}>
-      <Theme appearance="dark" accentColor="iris" panelBackground="solid" scaling="110%">
+      <Theme appearance="light" accentColor="purple" panelBackground="solid" scaling="110%">
           <NavBar></NavBar>
           <main className='p-5'>{children}</main>
         </Theme>
