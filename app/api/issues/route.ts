@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest){
             data: { 
                 title: data.title,
                 description: data.description,
-                status: data.editStatus,
+                status: data.status,
                 updatedAt: data.updatedAt
              }
         })

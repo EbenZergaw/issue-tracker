@@ -1,9 +1,9 @@
 'use client'
 import { Issue } from '@prisma/client'
-import { TextFieldInput, Tooltip } from '@radix-ui/themes'
+import { Select, TextFieldInput, Tooltip } from '@radix-ui/themes'
 import axios from 'axios'
 import React, { useState } from 'react'
-import {AiFillCloseCircle, AiFillCheckCircle} from 'react-icons/ai'
+import {GoIssueOpened, GoIssueClosed} from 'react-icons/go'
 import {MdEdit} from 'react-icons/md'
 import { Button, Callout, Text, TextField } from '@radix-ui/themes'
 import {useForm, Controller} from 'react-hook-form'
@@ -55,7 +55,9 @@ interface IssueThumbnailProps {
           status: editStatus,
           updatedAt: new Date()
         }
+        console.log(issue)
         let editIssue = await axios.put('/api/issues', {id: id, action:"ISSUE_EDIT", data})
+        console.log(editIssue);
         _getData()
       } catch (error) {
         console.log(error);
@@ -83,14 +85,30 @@ interface IssueThumbnailProps {
             <SimpleMdeReact className='mt-4'
               value={issue.description}
             ></SimpleMdeReact>
-            
-            <Button onClick={(e) => {
-              e.preventDefault()
-              editIssue(issue.id)
-              setIsEditing(false)
-            }}>
-              Save
-            </Button>
+
+            <div className="flex items-center">
+              <Button onClick={(e) => {
+                    e.preventDefault()
+                    editIssue(issue.id)
+                    setIsEditing(false)
+                  }}>
+                  Save
+              </Button>
+              <div className="ml-4">
+                <Select.Root defaultValue={editStatus} onValueChange={(val) => {
+                  setEditStatus(val)
+                }}>
+                  <Select.Trigger />
+                  <Select.Content>
+                    <Select.Group>
+                      <Select.Item value="OPEN">OPEN</Select.Item>
+                      <Select.Item value="IN_PROGRESS">IN PROGRESS</Select.Item>
+                      <Select.Item value="CLOSED">CLOSED</Select.Item>
+                    </Select.Group>
+                  </Select.Content>
+                </Select.Root>
+              </div>
+            </div>
         </div>
       )
     } else {
@@ -113,13 +131,13 @@ interface IssueThumbnailProps {
     
                   <Tooltip content="Reopen Issue">
                     <button onClick={() => openIssue(issue.id)}>
-                      <AiFillCheckCircle className='float-right text-2xl text-green-300 hover:text-red-400'/>
+                      <GoIssueClosed className='float-right text-2xl text-green-300 hover:text-red-400'/>
                     </button>
                   </Tooltip>
                 : 
                 <Tooltip content="Close Issue">
                   <button onClick={() => closeIssue(issue.id)}>
-                    <AiFillCloseCircle  className='float-right text-2xl text-red-300 hover:text-green-400'/>
+                    <GoIssueOpened  className='float-right text-2xl text-red-300 hover:text-green-400'/>
                   </button>
                 </Tooltip>
                 }
@@ -133,12 +151,9 @@ interface IssueThumbnailProps {
                     setIsEditing(true)
                   }}></MdEdit>
                 </button>
-              </Tooltip>
-    
-              
-                          
+              </Tooltip>       
             </div>
-            </div>
+          </div>
         </div>
       )
     }
