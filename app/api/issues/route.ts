@@ -29,9 +29,14 @@ export async function GET(request: NextRequest){
             where: { status: Status.OPEN}
         })
         return NextResponse.json(data, {status: 201})
-    } else {
+    } else if(statusView == "closed"){
         const data = await prisma.issue.findMany({
             where: { status: Status.CLOSED}
+        })
+        return NextResponse.json(data, {status: 201})
+    } else {
+        const data = await prisma.issue.findMany({
+            where: { status: Status.IN_PROGRESS}
         })
         return NextResponse.json(data, {status: 201})
     }

@@ -55,9 +55,8 @@ interface IssueThumbnailProps {
           status: editStatus,
           updatedAt: new Date()
         }
-        console.log(issue)
+        
         let editIssue = await axios.put('/api/issues', {id: id, action:"ISSUE_EDIT", data})
-        console.log(editIssue);
         _getData()
       } catch (error) {
         console.log(error);

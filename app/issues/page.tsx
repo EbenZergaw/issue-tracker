@@ -43,8 +43,11 @@ function IssuesPage() {
               <Button onClick={() => {setStatusView("closed")}} variant='outline'>
                 Closed Issues
               </Button>
+              <Button onClick={() => {setStatusView("in_progress")}} variant='outline'>
+                In Progress
+              </Button>
             </div>
-            :
+            : statusView == 'closed' ?
               <div className='space-x-5'>
                 <Button onClick={() => {setStatusView("open")}} variant='outline'>
                   Open Issues
@@ -52,8 +55,23 @@ function IssuesPage() {
                 <Button onClick={() => {setStatusView("closed")}}>
                   Closed Issues
                 </Button>
+                <Button onClick={() => {setStatusView("in_progress")}} variant='outline'>
+                  In Progress
+                </Button>
+              </div>
+            : <div className='space-x-5'>
+                <Button onClick={() => {setStatusView("open")}} variant='outline'>
+                  Open Issues
+                </Button>
+                <Button onClick={() => {setStatusView("closed")}} variant='outline'>
+                  Closed Issues
+                </Button>
+                <Button onClick={() => {setStatusView("in_progress")}} >
+                  In Progress
+                </Button>
               </div>
           }
+          
         </div>
 
         {issuesData.map((issue) => {
