@@ -37,23 +37,36 @@ export async function GET(request: NextRequest){
     }
 }
 
-// TOGGLE ISSUE STATUS
+// EDIT
+// TOGGLE ISSUE STATUS || EDIT ISSUE TITLE / DESCRIPTION
 export async function PUT(request: NextRequest){
-    const {id, action} = await request.json()
-    if(action == "OPEN"){
+    
+    const {id, action, data} = await request.json()
+
+    if(action == "STATUS_OPEN"){
         const issue = await prisma.issue.update({
             where: {id: id},
             data: { status: Status.OPEN }
         })
         return NextResponse.json(issue)
 
-    } else if (action == "CLOSE"){
+    } else if (action == "STATUS_CLOSE"){
         const issue = await prisma.issue.update({
             where: {id: id},
             data: { status: Status.CLOSED }
         })
         return NextResponse.json(issue)
-    }
-    
 
+    } else if(action == "ISSUE_EDIT"){
+        const issue = await prisma.issue.update({
+            where: {id: id},
+            data: { 
+                title: data.title,
+                description: data.description,
+                status: data.editStatus,
+                updatedAt: data.updatedAt
+             }
+        })
+        return NextResponse.json(issue)
+    }
 }

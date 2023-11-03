@@ -24,12 +24,14 @@ interface IssueThumbnailProps {
 
     const [isEditing, setIsEditing] = useState(false)
     const [editTitle, setEditTitle] = useState(issue.title)
+    const [editDesc, setEditDesc] = useState(issue.description)
+    const [editStatus, setEditStatus] = useState(issue.status)
     
     let date = new Date(issue.createdAt)
 
     const closeIssue = async (id:number) => {
         try {
-          let closeIssue = await axios.put('/api/issues', {id: id, action: "CLOSE"})
+          let closeIssue = await axios.put('/api/issues', {id: id, action: "STATUS_CLOSE", data:{}})
           _getData()
         } catch (error) {
         //   setError('An unexpected error occured')
@@ -38,11 +40,27 @@ interface IssueThumbnailProps {
 
     const openIssue = async(id:number) => {
       try {
-        let openIssue = await axios.put('/api/issues', {id: id, action: "OPEN"})
+        let openIssue = await axios.put('/api/issues', {id: id, action: "STATUS_OPEN", data:{}})
         _getData()
       } catch (error) {
       //   setError('An unexpected error occured')
       }
+    }
+
+    const editIssue = async (id: number) => {
+      try {
+        const data = {
+          title: editTitle,
+          description: editDesc,
+          status: editStatus,
+          updatedAt: new Date()
+        }
+        let editIssue = await axios.put('/api/issues', {id: id, action:"ISSUE_EDIT", data})
+        _getData()
+      } catch (error) {
+        console.log(error);
+      }
+      
     }
 
 
@@ -68,6 +86,7 @@ interface IssueThumbnailProps {
             
             <Button onClick={(e) => {
               e.preventDefault()
+              editIssue(issue.id)
               setIsEditing(false)
             }}>
               Save
@@ -93,9 +112,7 @@ interface IssueThumbnailProps {
                 {issue.status == "CLOSED" ? 
     
                   <Tooltip content="Reopen Issue">
-                    <button onClick={() => openIssue(issue.id)} onMouseEnter={() => {
-                        displayTooltip("Open Issue")
-                      }}>
+                    <button onClick={() => openIssue(issue.id)}>
                       <AiFillCheckCircle className='float-right text-2xl text-green-300 hover:text-red-400'/>
                     </button>
                   </Tooltip>
