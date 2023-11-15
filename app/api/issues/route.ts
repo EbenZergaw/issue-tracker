@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import { createIssueSchema } from "../../validationSchemas";
+import { stat } from "fs";
 
 // CREATE ISSUE
 export async function POST(request: NextRequest){
@@ -34,10 +35,13 @@ export async function GET(request: NextRequest){
             where: { status: Status.CLOSED}
         })
         return NextResponse.json(data, {status: 201})
-    } else {
+    } else if(statusView == "in_progress"){
         const data = await prisma.issue.findMany({
             where: { status: Status.IN_PROGRESS}
         })
+        return NextResponse.json(data, {status: 201})
+    } else if(statusView == "all"){
+        const data = await prisma.issue.findMany()
         return NextResponse.json(data, {status: 201})
     }
 }
@@ -63,6 +67,7 @@ export async function PUT(request: NextRequest){
         return NextResponse.json(issue)
 
     } else if(action == "ISSUE_EDIT"){
+        console.log(data.description)
         const issue = await prisma.issue.update({
             where: {id: id},
             data: { 

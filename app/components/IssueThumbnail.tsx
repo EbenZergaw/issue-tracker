@@ -48,6 +48,7 @@ interface IssueThumbnailProps {
     }
 
     const editIssue = async (id: number) => {
+      console.log(editDesc);
       try {
         const data = {
           title: editTitle,
@@ -83,6 +84,9 @@ interface IssueThumbnailProps {
 
             <SimpleMdeReact className='mt-4'
               value={issue.description}
+              onChange={(e) => {
+                setEditDesc(e)
+              }}
             ></SimpleMdeReact>
 
             <div className="flex items-center">
