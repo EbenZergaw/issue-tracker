@@ -35,7 +35,10 @@ const router = useRouter()
     })
 
   return (
-    <div className='max-w-xl'>
+    <>
+    
+    <h1 className="text-purple-400 font-bold text-3xl mb-14 ml-14">Submit a new issue</h1>
+    <div className='ml-14 w-1/2'>
         {error && <Callout.Root className='mb-5' color="red">
                 <Callout.Text>{error}</Callout.Text>
             </Callout.Root>}
@@ -55,6 +58,7 @@ const router = useRouter()
             <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner></Spinner>}</Button>
         </form>
     </div>
+    </>
   )
 }
 
