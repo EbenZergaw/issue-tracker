@@ -105,9 +105,15 @@ interface IssueThumbnailProps {
                   <Select.Trigger />
                   <Select.Content>
                     <Select.Group>
-                      <Select.Item value="OPEN">OPEN</Select.Item>
-                      <Select.Item value="IN_PROGRESS">IN PROGRESS</Select.Item>
-                      <Select.Item value="CLOSED">CLOSED</Select.Item>
+                      <Select.Item value="OPEN">
+                        <button className="text-red-400">OPEN</button>
+                      </Select.Item>
+                      <Select.Item value="IN_PROGRESS">
+                        <button className="text-blue-400">IN PROGRESS</button>
+                      </Select.Item>
+                      <Select.Item value="CLOSED">
+                        <button className="text-green-400">CLOSE</button>
+                      </Select.Item>
                     </Select.Group>
                   </Select.Content>
                 </Select.Root>
@@ -125,14 +131,14 @@ interface IssueThumbnailProps {
       )
     } else {
       return (
-        <div className='border border-purple-600 rounded-lg p-4 mb-4 w-11/12'>
+        <div className='border border-purple-600 rounded-lg p-4 mb-4 w-11/12 bg-[#251340]'>
             <div className="grid grid-cols-10">
             <div className="col-span-9">
                 <h2 className='text-purple-600 font-bold'>{issue.title}</h2>
-                <p>{issue.description}</p>
+                <p className='text-gray-300'>{issue.description}</p>
                 <div className="mt-8">
                 <span className='text-purple-600'>Created at: </span>
-                <span>{date.toDateString()}</span>
+                <span className='text-gray-300'>{date.toDateString()}</span>
                 </div>
             </div>
     
@@ -149,7 +155,11 @@ interface IssueThumbnailProps {
                 : 
                 <Tooltip content="Close Issue">
                   <button onClick={() => closeIssue(issue.id)}>
-                    <GoIssueOpened  className='float-right text-2xl text-red-600 hover:text-green-600'/>
+                    {issue.status === "IN_PROGRESS" ?
+                     <GoIssueOpened  className='float-right text-2xl text-blue-400 hover:text-green-600'/>
+                     : 
+                      <GoIssueOpened  className='float-right text-2xl text-red-600 hover:text-green-600'/>
+                     }
                   </button>
                 </Tooltip>
                 }
@@ -159,7 +169,7 @@ interface IssueThumbnailProps {
     
               <Tooltip content="Edit Issue">
                 <button className='float-right'>
-                  <MdEdit className="text-2xl mt-12" onClick={() => {
+                  <MdEdit className="text-2xl mt-12 text-purple-400" onClick={() => {
                     setIsEditing(true)
                   }}></MdEdit>
                 </button>

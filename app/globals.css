@@ -12,5 +12,23 @@
   }
 }
 
-body {
+html, .radix-themes{
+  background-color: rgb(23, 15, 43);
+}
+
+.CodeMirror-scroll, .rt-TextFieldInput, .rt-r-size-2, .rt-variant-surface, .rt-TextFieldChrome, .rt-TextFieldRoot{
+  padding: 0px;
+  background-color: rgb(34, 23, 63) !important;
+  color: rgb(185, 121, 244) !important;
+}
+
+.editor-toolbar button i{
+  color: blueviolet;
+}
+.editor-toolbar button:hover{
+  background-color: rgb(39, 26, 74) !important;
+}
+
+.EasyMDEContainer .CodeMirror {
+  padding: 0px !important;
 }
